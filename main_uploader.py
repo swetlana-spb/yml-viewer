@@ -31,9 +31,7 @@ def get_args():
 if __name__ == '__main__':
     args = get_args()
     db = Database(args.host, args.port, args.password)
-
-    parser = XmlParser(args.fileName)
-    data = parser.parse()
+    data = XmlParser(args.fileName).parse()
     if data:
         try:
             db.upload_data(data)
