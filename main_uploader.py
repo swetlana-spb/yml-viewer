@@ -1,7 +1,7 @@
 import argparse
 import getpass
 from parser import XmlParser
-from database import DatabaseWorker
+from database import Database
 
 
 class Password(argparse.Action):
@@ -11,35 +11,34 @@ class Password(argparse.Action):
         setattr(namespace, self.dest, values)
 
 
-def create_args_parser():
-    parser = argparse.ArgumentParser(description='Uploading data from .xml into redis database.')
+def get_args():
+    parser = argparse.ArgumentParser(description='Uploads data from .xml into redis database.')
     parser.add_argument('-f', '--fileName', help='path to a file', required=True)
     parser.add_argument('-H', '--host',
-                        help='ip-address of the database',
+                        help='ip-address for the database',
                         required=False)
     parser.add_argument('-p', '--port',
-                        help='port of the database',
+                        help='port for the database',
                         required=False)
     parser.add_argument('-P', '--password',
                         action=Password,
                         nargs='?',
-                        help='password to the database',
+                        help='password for the database',
                         required=False)
-    return parser
+    return parser.parse_args()
 
 
 if __name__ == '__main__':
-    args_parser = create_args_parser()
-    args = args_parser.parse_args()
-    db_worker = DatabaseWorker(args.host, args.port, args.password)
+    args = get_args()
+    db = Database(args.host, args.port, args.password)
 
     parser = XmlParser(args.fileName)
     data = parser.parse()
     if data:
         try:
-            db_worker.upload_data(data)
-            print('Data uploaded. Bye!')
+            db.upload_data(data)
+            print('Data uploaded. Bye! :)')
         except:
-            print('Something go wrong :(')
+            print('Something went wrong :(')
     else:
         print('There is no data to upload :(')

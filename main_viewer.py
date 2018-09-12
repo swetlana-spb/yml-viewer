@@ -1,9 +1,9 @@
 import sys
 import argparse
 import getpass
-from PyQt5 import QtWidgets, QtGui
+from PyQt5 import QtWidgets
 from viewer.viewer import Viewer
-from database import DatabaseWorker
+from database import Database
 
 
 class Password(argparse.Action):
@@ -13,30 +13,28 @@ class Password(argparse.Action):
         setattr(namespace, self.dest, values)
 
 
-def create_args_parser():
-    parser = argparse.ArgumentParser(description='Shows data from redis database.')
+def get_args():
+    parser = argparse.ArgumentParser(description='Uploads data from .xml into redis database.')
     parser.add_argument('-H', '--host',
-                        help='ip-address of the database',
+                        help='ip-address for the database',
                         required=False)
     parser.add_argument('-p', '--port',
-                        help='port of the database',
+                        help='port for the database',
                         required=False)
     parser.add_argument('-P', '--password',
                         action=Password,
                         nargs='?',
-                        help='password to the database',
+                        help='password for the database',
                         required=False)
-    return parser
+    return parser.parse_args()
 
 
 if __name__ == "__main__":
-    args_parser = create_args_parser()
-    args = args_parser.parse_args()
+    args = get_args()
     app = QtWidgets.QApplication(sys.argv)
     viewer = Viewer()
-    db_worker = DatabaseWorker(args.host, args.port, args.password)
-    data = db_worker.download_data()
+    db = Database(args.host, args.port, args.password)
+    data = db.download_data()
     viewer.fill_table(data)
     viewer.show()
     sys.exit(app.exec_())
-

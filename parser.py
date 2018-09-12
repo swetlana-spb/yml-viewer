@@ -8,6 +8,8 @@ class XmlParser(object):
     def parse(self):
         data = {}
         categories_dict = {}
+        '''This may be a problem for a large xml-file, but must be ok for the example.
+        iterparse() will be more suitable for a large files'''
         tree = etree.parse(self.document)
         root = tree.getroot()
         for shop in root.findall('shop'):
@@ -24,5 +26,5 @@ class XmlParser(object):
                         name = '{0} {1}'.format(offer.find('vendor').text, offer.find('model').text)
                     category = offer.find('categoryId').text
                     price = offer.find('price').text
-                    data[offer_id] = '{0}: {1} : {2}'.format(categories_dict[category], name, price)
+                    data[offer_id] = '{0}: {1}: {2}'.format(categories_dict[category], name, price)
         return data

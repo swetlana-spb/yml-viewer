@@ -1,10 +1,11 @@
 # yml-viewer
 
 This is an app, consists of two main scripts. 
-First of them uploading data from .xml file into redis database.
-Second of them showing data from redis database.
+First of them uploads data from .xml file into redis database.
+Second of them shows data from redis database.
 
 # requirements
+
 To run this app you may need:
  - python 3.x
  - PyQt5
@@ -15,7 +16,7 @@ To run this app you may need:
 
 usage: main_uploader.py [-h] -f FILENAME [-H HOST] [-p PORT] [-P [PASSWORD]]
 
-Uploading data from .xml into redis database.
+Uploads data from .xml into redis database.
 
 optional arguments:
 
