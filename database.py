@@ -16,9 +16,10 @@ class Database(object):
     def download_data(self):
         data_list = []
         for key in self.db.keys():
-            value_list = self.db.mget(key)
-            for value in value_list:
-                if isinstance(value, bytes):
-                    row = value.split(b':')
-                    data_list.append(row)
+            if key.startswith(b'yml-offer_'):
+                value_list = self.db.mget(key)
+                for value in value_list:
+                    if isinstance(value, bytes):
+                        row = value.split(b':')
+                        data_list.append(row)
         return data_list
