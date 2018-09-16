@@ -34,19 +34,13 @@ optional arguments:
  
  # viewer
  
- usage: main_viewer.py [-h] [-H HOST] [-p PORT] [-P [PASSWORD]]
+ usage: main_viewer.py 
 
 Shows data from redis database.
 
-optional arguments:
+To see data from database push "Connect" button. So viewer connect to localhost. 
 
-  -h, --help            show this help message and exit
-  
-  -H HOST, --host HOST  ip-address of the database
-  
-  -p PORT, --port PORT  port of the database
-  
-  -P [PASSWORD], --password [PASSWORD] password to the database
-  
-Note: if you don't provide host, port or password, this script will try to connect to localhost
+If you want to connect to another db, go to menu "Connection" - "Settings" and write connection settings. 
+
+To refresh data with current connection push "Refresh" button.
  
