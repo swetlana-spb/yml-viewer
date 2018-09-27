@@ -17,10 +17,17 @@ class Viewer(QMainWindow, Ui_MainWindow):
         self.setWindowTitle('Data in redis database')
         self.statusbar.showMessage('Not connected')
         self.tblOffers.setMinimumSize(400, 300)
+        self.settings = QtCore.QSettings('settings.ini', QtCore.QSettings.IniFormat)
+        self.load_settings()
         self.actionExit.triggered.connect(sys.exit)
         self.btnConnect.clicked.connect(self.connect)
         self.btnRefresh.clicked.connect(self.refresh)
-        self.actionSettings.triggered.connect(self.settings)
+        self.actionSettings.triggered.connect(self.settings_dialog)
+
+    def load_settings(self):
+        self.host = self.settings.value('host')
+        self.port = self.settings.value('port')
+        self.password = self.settings.value('password')
 
     def fill_table(self, data):
         model = OffersModel(self.tblOffers, data)
@@ -33,12 +40,10 @@ class Viewer(QMainWindow, Ui_MainWindow):
         except:
             QMessageBox.critical(self, 'Error', 'Connection to {0}:{1} failed.'.format(self.host, self.port))
 
-    def settings(self):
+    def settings_dialog(self):
         settings = Settings()
         settings.exec_()
-        self.host = settings.edtHost.text()
-        self.port = settings.edtPort.text()
-        self.password = settings.edtPassword.text()
+        self.load_settings()
 
     def refresh(self):
         data = self.db.download_data()
